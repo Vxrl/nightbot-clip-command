@@ -74,11 +74,8 @@ app.get("/auth", (req, res) =>
 
                 request.get(
                 {
-                    url: "https://id.twitch.tv/oauth2/token" +
-                         "?grant_type=refresh_token" +
-                         "&refresh_token=" + encodeURIComponent(response.refresh_token) +
-                         "&client_id=" + encodeURIComponent(process.env.TWITCH_CLIENT_ID) +
-                         "&client_secret=" + encodeURIComponent(process.env.TWITCH_CLIENT_SECRET),
+                    url: "https://api.twitch.tv/helix/users" +
+                         "?login=" + encodeURIComponent(state.channel),
                     headers:
                     {
                         "Client-ID": process.env.TWITCH_CLIENT_ID,
