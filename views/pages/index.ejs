@@ -5,6 +5,19 @@
     </head>
 
     <body>
-        <a href="/auth">Login with Twitch</a>
+        <h1></h1>
+
+        <form action="/auth" method="get">
+            <div>
+                <label for="channel">Channel:</label>
+                <input type="text" id="channel" name="channel" required>
+            </div>
+
+            <br>
+
+            <div>
+                <button type="submit">Login with Twitch</button>
+            </div>
+        </form>
     </body>
 </html>
