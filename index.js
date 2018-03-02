@@ -17,6 +17,7 @@ express()
 */
 
 
+app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) =>
@@ -24,7 +25,12 @@ app.get("/", (req, res) =>
     res.render("pages/index");
 });
 
+app.get("/auth", (req, res) =>
+{
+    res.render("pages/auth");
+});
+
 app.listen(port, () =>
 {
-    console.log("Listening on port ${port}");
+    console.log(`Listening on port ${port}`);
 });
