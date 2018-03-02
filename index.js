@@ -21,7 +21,15 @@ app.set("view engine", "ejs");
 
 app.get("/", (req, res) =>
 {
-    res.render("pages/index");
+    res.render("pages/index",
+    {
+        base_url: "https://api.twitch.tv/kraken/oauth2/authorize",
+        client_id: process.env.TWITCH_CLIENT_ID,
+        redirect_uri: process.env.TWITCH_REDIRECT_URI,
+        response_type: "token",
+        scope: process.env.TWITCH_SCOPE,
+        force_verify: process.env.TWITCH_FORCE_VERIFY
+    });
 });
 
 app.get("/auth", (req, res) =>
@@ -32,28 +40,16 @@ app.get("/auth", (req, res) =>
 
         if (channel)
         {
-            /*res.redirect("https://id.twitch.tv/oauth2/authorize" +
+            res.redirect("https://api.twitch.tv/kraken/oauth2/authorize" +
                 "?client_id=" + encodeURIComponent(process.env.TWITCH_CLIENT_ID) +
                 "&redirect_uri=" + encodeURIComponent(process.env.TWITCH_REDIRECT_URI) +
-                "&response_type=" + encodeURIComponent(process.env.TWITCH_RESPONSE_TYPE) +
+                "&response_type=token" +
                 "&scope=" + encodeURIComponent(process.env.TWITCH_SCOPE) +
                 "&force_verify=" + encodeURIComponent(process.env.TWITCH_FORCE_VERIFY) +
                 "&state=" + encodeURIComponent(JSON.stringify(
                 {
                     channel: channel
                 }))
-            );*/
-
-            res.redirect("https://id.twitch.tv/oauth2/authorize" +
-            "?client_id=" + encodeURIComponent(process.env.TWITCH_CLIENT_ID) +
-            "&redirect_uri=" + encodeURIComponent(process.env.TWITCH_REDIRECT_URI) +
-            "&response_type=" + encodeURIComponent(/*process.env.TWITCH_RESPONSE_TYPE*/"token") +
-            "&scope=" + encodeURIComponent(process.env.TWITCH_SCOPE) +
-            "&force_verify=" + encodeURIComponent(process.env.TWITCH_FORCE_VERIFY) +
-            "&state=" + encodeURIComponent(JSON.stringify(
-            {
-                channel: channel
-            }))
             );
         }
         else
@@ -64,7 +60,7 @@ app.get("/auth", (req, res) =>
             });
         }
     }
-    else if (req.query.hasOwnProperty("code") && req.query.hasOwnProperty("state"))
+    /*else if (req.query.hasOwnProperty("code") && req.query.hasOwnProperty("state"))
     {
         const code = req.query.code;
         const state = JSON.parse(req.query.state);
@@ -113,11 +109,16 @@ app.get("/auth", (req, res) =>
             {
                message: "Authorization code and state not found"
             });
-    }
+    }*/
     else
     {
         res.redirect("/");
     }
+});
+
+app.get("/auth/twitch/callback", (req, res) =>
+{
+    res.render("pages/");
 });
 
 app.listen(port, () =>

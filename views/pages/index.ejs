@@ -2,12 +2,28 @@
 <html>
     <head>
         <% include ../partials/header.ejs %>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript" language="javascript">
+            $(document).ready(function() {
+                const oauthHash = location.hash.substr(1);
+                const accessToken = oauthHash.substr(oauthHash.indexOf('access_token=')).split('&')[0].split('=')[1];
+
+                if (accessToken)
+                {
+                    $("#startAuth").hide();
+                    //$("#passwordTable").show();
+                    //$("#tmiPasswordField").val('oauth:' + encodeURIComponent(accessToken));
+                    //$("#tmiExample").html('/nick yourtwitchusername<br />/server irc.twitch.tv 6667 oauth:' + encodeURIComponent(accessToken));
+                }
+            });
+        </script>
     </head>
 
     <body>
         <h1></h1>
 
-        <form action="/auth" method="get">
+        <form action="/auth" method="get" id="startAuth">
             <div>
                 <label for="channel">Channel to clip:</label>
                 <input type="text" id="channel" name="channel" required>
@@ -16,8 +32,24 @@
             <br>
 
             <div>
-                <button type="submit">Login with Twitch</button>
+                <button type="button" onclick="startAuth()">Login with Twitch</button>
             </div>
+
+            <script type="text/javascript" language="javascript">
+                function startAuth()
+                {
+                    window.location.href = "<%= base_url %>" +
+                        "?client_id=" + encodeURIComponent("<%= client_id %>") +
+                        "&redirect_uri=" + encodeURIComponent("<%= redirect_uri %>") +
+                        "&response_type=" + encodeURIComponent("<%= response_type %>") +
+                        "&scope=" + encodeURIComponent("<%= scope %>") +
+                        "&force_verify=" + encodeURIComponent("<%= force_verify %>") +
+                        "&state=" + encodeURIComponent(JSON.stringify(
+                        {
+                            channel: channel
+                        }))
+                }
+            </script>
         </form>
     </body>
 </html>
