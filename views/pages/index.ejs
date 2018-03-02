@@ -5,14 +5,42 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
         <script type="text/javascript" language="javascript">
-            $(document).ready(function() {
+            $(document).ready(() =>
+            {
                 const oauthHash = location.hash.substr(1);
                 const accessToken = oauthHash.substr(oauthHash.indexOf('access_token=')).split('&')[0].split('=')[1];
+                const stateString = oauthHash.substr(oauthHash.indexOf('state=')).split('&')[0].split('=')[1];
 
-                if (accessToken)
+                if (accessToken && stateString)
                 {
+                    let state;
+                    try
+                    {
+                        state = JSON.parse(stateString);
+                    }
+                    catch (e)
+                    {
+                        return;
+                    }
+
+                    if (!state.channel)
+                        return;
+
                     $("#startAuth").hide();
-                    //$("#passwordTable").show();
+                    $("#showCommand").show();
+
+                    fetch("https://api.twitch.tv/helix/users?login=" + state.channel,
+                    {
+                        headers:
+                        {
+                            "Authorization": "Bearer " + accessToken
+                        }
+                    }).then(response =>
+                    {
+                        $("#commandText").val(response);
+                    })
+
+
                     //$("#tmiPasswordField").val('oauth:' + encodeURIComponent(accessToken));
                     //$("#tmiExample").html('/nick yourtwitchusername<br />/server irc.twitch.tv 6667 oauth:' + encodeURIComponent(accessToken));
                 }
@@ -21,12 +49,10 @@
     </head>
 
     <body>
-        <h1></h1>
-
-        <form action="/auth" method="get" id="startAuth">
+        <div id="startAuth">
             <div>
-                <label for="channel">Channel to clip:</label>
-                <input type="text" id="channel" name="channel" required>
+                <label for="channelToClip">Channel to clip:</label>
+                <input type="text" id="channelToClip" required>
             </div>
 
             <br>
@@ -46,10 +72,14 @@
                         "&force_verify=" + encodeURIComponent("<%= force_verify %>") +
                         "&state=" + encodeURIComponent(JSON.stringify(
                         {
-                            channel: channel
-                        }))
+                            channel: channelToClip
+                        }));
                 }
             </script>
-        </form>
+        </div>
+
+        <div id="showCommand" style="display:none;">
+            <input type="text" id="commandText" onClick="this.select();" readonly="readonly">
+        </div>
     </body>
 </html>
