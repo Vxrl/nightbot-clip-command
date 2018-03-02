@@ -51,7 +51,7 @@ app.get("/auth", (req, res) =>
     else if (req.query.hasOwnProperty("code") && req.query.hasOwnProperty("state"))
     {
         const code = req.query.code;
-        const state = req.query.state;
+        const state = JSON.parse(req.query.state);
 
         if (code && state)
             request.post(
@@ -66,7 +66,7 @@ app.get("/auth", (req, res) =>
             {
                 if (err)
                 {
-                    res.send("Auth failure: " + err)
+                    res.send("Auth failure: " + err);
                     return;
                 }
 
