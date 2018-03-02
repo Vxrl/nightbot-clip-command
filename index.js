@@ -72,18 +72,23 @@ app.get("/auth", (req, res) =>
 
                 const response = JSON.parse(body);
 
-                request.post(
+                request.get(
                 {
                     url: "https://id.twitch.tv/oauth2/token" +
                          "?grant_type=refresh_token" +
                          "&refresh_token=" + encodeURIComponent(response.refresh_token) +
                          "&client_id=" + encodeURIComponent(process.env.TWITCH_CLIENT_ID) +
-                         "&client_secret=" + encodeURIComponent(process.env.TWITCH_CLIENT_SECRET)
+                         "&client_secret=" + encodeURIComponent(process.env.TWITCH_CLIENT_SECRET),
+                    headers:
+                    {
+                        "Client-ID": process.env.TWITCH_CLIENT_ID,
+                        "Authorization": "Bearer " + response.access_token
+                    }
                 }, (err2, httpResponse2, body2) =>
                 {
                     if (err2)
                     {
-                        res.send("Auth failure: " + err)
+                        res.send("Auth failure: " + err);
                         return;
                     }
 
