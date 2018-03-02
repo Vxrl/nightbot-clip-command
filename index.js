@@ -31,7 +31,8 @@ app.get("/auth", (req, res) =>
         const channel = req.query.channel;
 
         if (channel)
-            res.redirect("https://id.twitch.tv/oauth2/authorize" +
+        {
+            /*res.redirect("https://id.twitch.tv/oauth2/authorize" +
                 "?client_id=" + encodeURIComponent(process.env.TWITCH_CLIENT_ID) +
                 "&redirect_uri=" + encodeURIComponent(process.env.TWITCH_REDIRECT_URI) +
                 "&response_type=" + encodeURIComponent(process.env.TWITCH_RESPONSE_TYPE) +
@@ -41,12 +42,27 @@ app.get("/auth", (req, res) =>
                 {
                     channel: channel
                 }))
+            );*/
+
+            res.redirect("https://id.twitch.tv/oauth2/authorize" +
+            "?client_id=" + encodeURIComponent(process.env.TWITCH_CLIENT_ID) +
+            "&redirect_uri=" + encodeURIComponent(process.env.TWITCH_REDIRECT_URI) +
+            "&response_type=" + encodeURIComponent(/*process.env.TWITCH_RESPONSE_TYPE*/"token") +
+            "&scope=" + encodeURIComponent(process.env.TWITCH_SCOPE) +
+            "&force_verify=" + encodeURIComponent(process.env.TWITCH_FORCE_VERIFY) +
+            "&state=" + encodeURIComponent(JSON.stringify(
+            {
+                channel: channel
+            }))
             );
+        }
         else
+        {
             res.render("pages/error",
             {
                 message: "Channel not specified"
             });
+        }
     }
     else if (req.query.hasOwnProperty("code") && req.query.hasOwnProperty("state"))
     {
