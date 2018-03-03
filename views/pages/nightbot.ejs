@@ -28,20 +28,23 @@
                     return;
                 }
 
-                if (!state.channel)
+                if (!state.command)
                     return;
 
-                $("#startAuth").hide();
+                $("#returnToHome").hide();
 
-                $("#commandLoadingText").text("Getting user ID for " + state.channel);
-                $("#commandLoading").show();
+                $("#nightbotAddResultText").text("Adding !clips command...");
+                $("#nightbotAddResult").show();
 
                 $.ajax(
                 {
-                    url: "https://api.twitch.tv/helix/users",
+                    url: "https://api.nightbot.tv/1/commands",
                     data:
                     {
-                        login: state.channel
+                        "coolDown": "5",
+                        "message": state.command,
+                        "name": "!clips",
+                        "userLevel": "everyone"
                     },
                     headers:
                     {
@@ -49,7 +52,8 @@
                     }
                 }).done(data =>
                 {
-                    $("#commandLoading").hide();
+                    console.log(data);
+                    return;
 
                     if (data.error)
                     {
@@ -104,15 +108,15 @@
                     const nightbotCommand = `$(urlfetch https://nightbot-clip-command.herokuapp.com/clip?user_access_token=${encodeURIComponent(accessToken)}&channel_id=${encodeURIComponent((data.data[0].id))})`;
                     $("#commandViewText").val(nightbotCommand);
                     $("#commandViewAddLink").attr("href",
-                        "<%= nightbot_base_url %>" +
-                        "?client_id=" + encodeURIComponent("<%= nightbot_client_id %>") +
-                        "&redirect_uri=" + encodeURIComponent("<%= nightbot_redirect_uri %>") +
-                        "&response_type=" + encodeURIComponent("<%= nightbot_response_type %>") +
-                        "&scope=" + encodeURIComponent("<%= nightbot_scope %>") +
-                        "&state=" + encodeURIComponent(JSON.stringify(
-                        {
-                            command: nightbotCommand
-                        }))
+                    "<%= nightbot_base_url %>" +
+                    "?client_id=" + encodeURIComponent("<%= nightbot_client_id %>") +
+                    "&redirect_uri=" + encodeURIComponent("<%= nightbot_redirect_uri %>") +
+                    "&response_type=" + encodeURIComponent("<%= nightbot_response_type %>") +
+                    "&scope=" + encodeURIComponent("<%= nightbot_scope %>") +
+                    "&state=" + encodeURIComponent(JSON.stringify(
+                    {
+                        command: nightbotCommand
+                    }))
                     );
                     $("#commandView").show();
                 });
@@ -121,66 +125,12 @@
     </head>
 
     <body>
-        <div id="startAuth">
-            <div>
-                <label for="channelToClip">Channel to clip:</label>
-                <input type="text" id="channelToClip" onkeypress="textBoxKeyPressed(event)">
-            </div>
-
-            <br>
-
-            <div>
-                <button type="button" onclick="startAuth()">Login with Twitch</button>
-            </div>
-
-            <script type="text/javascript" language="javascript">
-                function startAuth()
-                {
-                    if (!channelToClip.value)
-                    {
-                        alert("Enter a channel name");
-                        return;
-                    }
-
-                    window.location.href = "<%= twitch_base_url %>" +
-                        "?client_id=" + encodeURIComponent("<%= twitch_client_id %>") +
-                        "&redirect_uri=" + encodeURIComponent("<%= twitch_redirect_uri %>") +
-                        "&response_type=" + encodeURIComponent("<%= twitch_response_type %>") +
-                        "&scope=" + encodeURIComponent("<%= twitch_scope %>") +
-                        "&force_verify=" + encodeURIComponent("<%= twitch_force_verify %>") +
-                        "&state=" + encodeURIComponent(JSON.stringify(
-                        {
-                            channel: channelToClip.value
-                        }));
-                }
-                
-                function textBoxKeyPressed(event)
-                {
-                    if (event.keyCode === 13)
-                    {
-                        event.preventDefault();
-                        startAuth();
-                    }
-                }
-            </script>
+        <div id="returnToHome">
+            <a href="/">Return home</a>
         </div>
 
-        <div id="commandLoading" style="display:none;">
-            <p id="commandLoadingText"></p>
-        </div>
-
-        <div id="commandFailure" style="display:none;">
-            <p id="commandFailureText"></p>
-        </div>
-
-        <div id="commandView" style="display:none;">
-            <label for="commandViewText">Nightbot command:</label>
-            <textarea id="commandViewText" rows="2" cols="100" onClick="this.select();" readonly="readonly"></textarea>
-
-            <br>
-
-            <p>Add this command through the <a href="https://beta.nightbot.tv/commands/custom">Nightbot web interface</a>, or click below to automatically add the command.</p>
-            <a id="commandViewAddLink">Automatically add the command !clips</a>
+        <div id="nightbotAddResult" style="display:none;">
+            <p id="nightbotAddResultText"></p>
         </div>
     </body>
 </html>
