@@ -53,8 +53,30 @@
 
                     if (data.error)
                     {
-                        $("#commandFailureText").text(data.message || "Error: " + data.error);
-                        $("#commandFailure").show();
+                        if (!data.message)
+                        {
+                            res.send("Error: " + data.error);
+                            return
+                        }
+
+                        let messageContainer;
+                        try
+                        {
+                            messageContainer = JSON.parse(data.message);
+                        }
+                        catch (e)
+                        {
+                            res.send("Error: couldn't parse error message");
+                            return
+                        }
+
+                        if (!messageContainer.message)
+                        {
+                            res.send("Error: " + data.error);
+                            return;
+                        }
+
+                        res.send(messageContainer.message);
                         return;
                     }
 

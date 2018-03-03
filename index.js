@@ -62,7 +62,30 @@ app.get("/clip", (req, res) =>
 
         if (response.error)
         {
-            res.send(response.message || "Error: " + response.error);
+            if (!response.message)
+            {
+                res.send("Error: " + response.error);
+                return
+            }
+
+            let messageContainer;
+            try
+            {
+                messageContainer = JSON.parse(response.message);
+            }
+            catch (e)
+            {
+                res.send("Error: couldn't parse error message");
+                return
+            }
+
+            if (!messageContainer.message)
+            {
+                res.send("Error: " + response.error);
+                return;
+            }
+
+            res.send(messageContainer.message);
             return;
         }
 
