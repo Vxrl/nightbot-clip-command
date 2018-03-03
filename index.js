@@ -61,12 +61,36 @@ app.get("/clip", (req, res) =>
     {
         if (err)
         {
-            res.send("Error " + httpResponse.statusCode);
+            res.send("Error reaching Twitch API: " + err);
             return;
         }
 
-        const response = JSON.parse(body);
-        res.send(JSON.stringify(response));
+        let response;
+        try
+        {
+            response = JSON.parse(body);
+        }
+        catch (e)
+        {
+            res.send("Failed to parse response");
+            return;
+        }
+
+        if (response.error)
+        {
+            res.send(`Error: ${response.error}: ${response.message || "No message"}`)
+        }
+        else if (response.data)
+        {
+            if (response.data.edit_url)
+                res.send("Clip created: " + response.data.edit_url);
+            else
+                res.send("Error: got data but no edit url");
+        }
+        else
+        {
+            res.send("Error: no error or data");
+        }
     });
 });
 
