@@ -54,11 +54,9 @@
                 }).done(data =>
                 {
                     console.log(data);
-                }).fail((jqXHR, textStatus, errorThrown) =>
+                }).fail(jqXHR =>
                 {
-                    console.log(jqXHR);
-                    console.log(textStatus);
-                    console.log(errorThrown);
+                    $("#nightbotAddResultText").text(jqXHR.responseJSON.message);
                 });
             });
         </script>
