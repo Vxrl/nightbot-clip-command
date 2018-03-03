@@ -101,7 +101,19 @@
                         return;
                     }
 
-                    $("#commandViewText").val(`!commands add !clip $(urlfetch https://nightbot-clip-command.herokuapp.com/clip?user_access_token=${encodeURIComponent(accessToken)}&channel_id=${encodeURIComponent((data.data[0].id))})`);
+                    const nightbotCommand = `$(urlfetch https://nightbot-clip-command.herokuapp.com/clip?user_access_token=${encodeURIComponent(accessToken)}&channel_id=${encodeURIComponent((data.data[0].id))})`;
+                    $("#commandViewText").val(nightbotCommand);
+                    $("#commandViewAddLink").attr("href",
+                        "<%= nightbot_base_url %>" +
+                        "?client_id=" + encodeURIComponent("<%= nightbot_client_id %>") +
+                        "&redirect_uri=" + encodeURIComponent("<%= nightbot_redirect_uri %>") +
+                        "&response_type=" + encodeURIComponent("<%= nightbot_response_type %>") +
+                        "&scope=" + encodeURIComponent("<%= nightbot_scope %>") +
+                        "&state=" + encodeURIComponent(JSON.stringify(
+                        {
+                            command: nightbotCommand
+                        }))
+                    );
                     $("#commandView").show();
                 });
             });
@@ -130,12 +142,12 @@
                         return;
                     }
 
-                    window.location.href = "<%= base_url %>" +
-                        "?client_id=" + encodeURIComponent("<%= client_id %>") +
-                        "&redirect_uri=" + encodeURIComponent("<%= redirect_uri %>") +
-                        "&response_type=" + encodeURIComponent("<%= response_type %>") +
-                        "&scope=" + encodeURIComponent("<%= scope %>") +
-                        "&force_verify=" + encodeURIComponent("<%= force_verify %>") +
+                    window.location.href = "<%= twitch_base_url %>" +
+                        "?client_id=" + encodeURIComponent("<%= twitch_client_id %>") +
+                        "&redirect_uri=" + encodeURIComponent("<%= twitch_redirect_uri %>") +
+                        "&response_type=" + encodeURIComponent("<%= twitch_response_type %>") +
+                        "&scope=" + encodeURIComponent("<%= twitch_scope %>") +
+                        "&force_verify=" + encodeURIComponent("<%= twitch_force_verify %>") +
                         "&state=" + encodeURIComponent(JSON.stringify(
                         {
                             channel: channelToClip.value
@@ -167,9 +179,8 @@
 
             <br>
 
-            <p>Add this command through the <a href="https://beta.nightbot.tv/commands/custom">Nightbot web interface</a>, or click below to automatically add the command.</p>
-            <br>
-            <a href="https://api.nightbot.tv/oauth2/authorize">Add the command !clips</a>
+            <p>Add this command through the <a href="https://beta.nightbot.tv/commands/custom">Nightbot web interface</a>, or click below to automatically add the command:</p>
+            <a id="commandViewAddLink">Add the command !clips</a>
         </div>
     </body>
 </html>
