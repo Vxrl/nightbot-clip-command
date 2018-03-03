@@ -59,9 +59,9 @@ app.get("/clip", (req, res) =>
         }
     }, (err, httpResponse, body) =>
     {
-        if (err || httpResponse.statusCode !== 200)
+        if (err)
         {
-            res.send(JSON.stringify({err: err, httpResponse: httpResponse}));
+            res.send("Error " + httpResponse.statusCode);
             return;
         }
 
