@@ -29,17 +29,20 @@
                     $("#startAuth").hide();
                     $("#showCommand").show();
 
-                    fetch("https://api.twitch.tv/helix/users?login=" + state.channel,
+                    $.get(
                     {
+                        url: "https://api.twitch.tv/helix/users",
+                        data:
+                        {
+                            login: state.channel
+                        },
                         headers:
                         {
                             "Authorization": "Bearer " + accessToken
                         }
-                    }).then(response =>
-                    {
-                        $("#commandText").val(JSON.stringify(response.json()));
-                    })
-
+                    }).done(data => {
+                        $("#commandText").val(JSON.stringify(data));
+                    });
 
                     //$("#tmiPasswordField").val('oauth:' + encodeURIComponent(accessToken));
                     //$("#tmiExample").html('/nick yourtwitchusername<br />/server irc.twitch.tv 6667 oauth:' + encodeURIComponent(accessToken));
