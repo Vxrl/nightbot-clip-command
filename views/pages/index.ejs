@@ -41,7 +41,7 @@
                             "Authorization": "Bearer " + accessToken
                         }
                     }).done(data => {
-                        $("#commandText").val(data.data.id);
+                        $("#commandText").val(data.data[0].id);
                     });
 
                     //$("#tmiPasswordField").val('oauth:' + encodeURIComponent(accessToken));
@@ -55,7 +55,7 @@
         <div id="startAuth">
             <div>
                 <label for="channelToClip">Channel to clip:</label>
-                <input type="text" id="channelToClip" required>
+                <input type="text" id="channelToClip" onkeypress="textBoxKeyPressed(event)" required>
             </div>
 
             <br>
@@ -78,12 +78,21 @@
                             channel: channelToClip.value
                         }));
                 }
+                
+                function textBoxKeyPressed(event)
+                {
+                    if (event.keyCode === 13)
+                    {
+                        e.preventDefault();
+                        startAuth();
+                    }
+                }
             </script>
         </div>
 
         <div id="showCommand" style="display:none;">
-            <p>Command text:</p>
-            <input type="text" id="commandText" onClick="this.select();" readonly="readonly">
+            <label for="commandText">Nightbot command:</label>
+            <textarea id="commandText" rows="10" cols="100" onClick="this.select();" readonly="readonly"></textarea>
         </div>
     </body>
 </html>
