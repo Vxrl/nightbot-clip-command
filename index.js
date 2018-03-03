@@ -62,7 +62,7 @@ app.get("/clip", (req, res) =>
 
         if (response.error)
         {
-            res.send(data.message || "Error: " + data.error);
+            res.send(response.message || "Error: " + response.error);
             return;
         }
 
@@ -74,13 +74,13 @@ app.get("/clip", (req, res) =>
 
         if (!response.data[0])
         {
-            res.send("Error: not data but no data[0]");
+            res.send("Error: got data but no data[0]");
             return;
         }
 
         if (!response.data[0].edit_url)
         {
-            res.send("Error: got data but no edit url");
+            res.send("Error: got data but no edit_url");
             return;
         }
 
