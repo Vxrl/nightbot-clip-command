@@ -47,7 +47,7 @@
                 {
                     $("#commandLoading").hide();
 
-                    $("#commandText").val(data.data[0].id);
+                    $("#commandText").val(`$(urlfetch https://nightbot-clip-command.herokuapp.com/clip?user_access_token=${encodeURIComponent(accessToken)}&channel_id=${encodeURIComponent((data.data[0].id))})`);
                     $("#showCommand").show();
                 });
             });
