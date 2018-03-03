@@ -11,42 +11,45 @@
                 const accessToken = decodeURIComponent(oauthHash.substr(oauthHash.indexOf('access_token=')).split('&')[0].split('=')[1]);
                 const stateString = decodeURIComponent(oauthHash.substr(oauthHash.indexOf('state=')).split('&')[0].split('=')[1]);
 
-                if (accessToken && stateString)
+                if (!accessToken || !stateString)
+                    return;
+
+                let state;
+                try
                 {
-                    let state;
-                    try
-                    {
-                        state = JSON.parse(stateString);
-                    }
-                    catch (e)
-                    {
-                        return;
-                    }
-
-                    if (!state.channel)
-                        return;
-
-                    $("#startAuth").hide();
-                    $("#showCommand").show();
-
-                    $.ajax(
-                    {
-                        url: "https://api.twitch.tv/helix/users",
-                        data:
-                        {
-                            login: state.channel
-                        },
-                        headers:
-                        {
-                            "Authorization": "Bearer " + accessToken
-                        }
-                    }).done(data => {
-                        $("#commandText").val(data.data[0].id);
-                    });
-
-                    //$("#tmiPasswordField").val('oauth:' + encodeURIComponent(accessToken));
-                    //$("#tmiExample").html('/nick yourtwitchusername<br />/server irc.twitch.tv 6667 oauth:' + encodeURIComponent(accessToken));
+                    state = JSON.parse(stateString);
                 }
+                catch (e)
+                {
+                    return;
+                }
+
+                if (!state.channel)
+                    return;
+
+                $("#startAuth").hide();
+
+                $("#loadingChannelText").val("Getting user ID for " + state.channel);
+                $("#commandLoading").show();
+
+                $.ajax(
+                {
+                    url: "https://api.twitch.tv/helix/users",
+                    data:
+                    {
+                        login: state.channel
+                    },
+                    headers:
+                    {
+                        "Authorization": "Bearer " + accessToken
+                    }
+                }).done(data =>
+                {
+                    $("#commandLoading").hide();
+
+                    $("#commandText").val(data.data[0].id);
+                    $("#showCommand").show();
+                });
             });
         </script>
     </head>
@@ -83,11 +86,15 @@
                 {
                     if (event.keyCode === 13)
                     {
-                        e.preventDefault();
+                        event.preventDefault();
                         startAuth();
                     }
                 }
             </script>
+        </div>
+
+        <div id="commandLoading" style="display:none;">
+            <p id="loadingChannelText"></p>
         </div>
 
         <div id="showCommand" style="display:none;">

@@ -116,11 +116,6 @@ app.get("/auth", (req, res) =>
     }
 });
 
-app.get("/auth/twitch/callback", (req, res) =>
-{
-    res.render("pages/");
-});
-
 app.listen(port, () =>
 {
     console.log(`Listening on port ${port}`);
