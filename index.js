@@ -82,8 +82,11 @@ app.get("/clip", (req, res) =>
         }
         else if (response.data)
         {
-            if (response.data.edit_url)
-                res.send("Clip created: " + response.data.edit_url);
+            if (!response.data[0])
+                res.send("Error: got data but no data[0]");
+
+            if (response.data[0].edit_url)
+                res.send("Clip created: " + response.data[0].edit_url);
             else
                 res.send("Error: got data but no edit url");
         }
