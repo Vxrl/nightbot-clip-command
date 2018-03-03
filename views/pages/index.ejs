@@ -189,6 +189,16 @@
 
             <p>Add this command through the <a href="https://beta.nightbot.tv/commands/custom">Nightbot web interface</a>, or click below to automatically add the command.</p>
             <a id="commandViewAddLink">Automatically add the command !clip</a>
+            <input type="button" onclick="window.location.href =
+                    '<%= nightbot_base_url %>' +
+                    '?client_id=' + encodeURIComponent('<%= nightbot_client_id %>') +
+                    '&redirect_uri=' + encodeURIComponent('<%= nightbot_redirect_uri %>') +
+                    '&response_type=' + encodeURIComponent('<%= nightbot_response_type %>') +
+                    '&scope=' + encodeURIComponent('<%= nightbot_scope %>') +
+                    '&state=' + encodeURIComponent(JSON.stringify(
+                    {
+                        command: nightbotCommand
+                    }))" value="Automatically add the command !clip" />
         </div>
     </body>
 </html>
