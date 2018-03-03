@@ -32,6 +32,44 @@ app.get("/", (req, res) =>
     });
 });
 
+app.get("/clip", (req, res) =>
+{
+    const user_access_token = req.query.user_access_token;
+    const channel_id = req.query.channel_id;
+
+    if (!user_access_token || !channel_id)
+    {
+        res.render("pages/error",
+        {
+            message: "User access token and channel ID not specified"
+        });
+        return;
+    }
+
+    request.post(
+    {
+        url: "https://api.twitch.tv/helix/clips",
+        form:
+        {
+            broadcaster_id: channel_id
+        },
+        headers:
+        {
+            "Authorization": "Bearer " + user_access_token
+        }
+    }, (err, httpResponse, body) =>
+    {
+        if (err || httpResponse.statusCode !== 200)
+        {
+            res.send(JSON.stringify({err: err, httpResponse: httpResponse}));
+            return;
+        }
+
+        const response = JSON.parse(body);
+        res.send(JSON.stringify(response));
+    });
+});
+
 app.get("/auth", (req, res) =>
 {
     if (req.query.hasOwnProperty("channel"))
