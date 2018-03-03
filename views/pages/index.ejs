@@ -53,7 +53,7 @@
 
                     if (data.error)
                     {
-                        $("#commandFailureText").text(`Error: ${data.error}: ${data.message || "No message"}`);
+                        $("#commandFailureText").text(data.message || "Error: " + data.error);
                         $("#commandFailure").show();
                         return;
                     }
@@ -67,7 +67,7 @@
 
                     if (!data.data[0])
                     {
-                        $("#commandFailureText").text("Error: Channel doesn't exist");
+                        $("#commandFailureText").text("Error: channel doesn't exist");
                         $("#commandFailure").show();
                         return;
                     }

@@ -45,7 +45,7 @@ app.get("/clip", (req, res) =>
     {
         if (err)
         {
-            res.send("Error: Failed to reach Twitch clips API: " + err);
+            res.send("Error: failed to reach Twitch clips API: " + err);
             return;
         }
 
@@ -56,13 +56,13 @@ app.get("/clip", (req, res) =>
         }
         catch (e)
         {
-            res.send("Error: Failed to parse response");
+            res.send("Error: failed to parse response");
             return;
         }
 
         if (response.error)
         {
-            res.send(`Error: ${response.error}: ${response.message || "No message"}`);
+            res.send(data.message || "Error: " + data.error);
             return;
         }
 
@@ -74,7 +74,7 @@ app.get("/clip", (req, res) =>
 
         if (!response.data[0])
         {
-            res.send("Error: got data but no data[0]");
+            res.send("Error: not data but no data[0]");
             return;
         }
 
