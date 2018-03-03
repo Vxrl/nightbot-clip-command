@@ -4,7 +4,6 @@ const request = require("request");
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) =>
@@ -27,10 +26,7 @@ app.get("/clip", (req, res) =>
 
     if (!user_access_token || !channel_id)
     {
-        res.render("pages/error",
-        {
-            message: "Error: User access token and channel ID not specified"
-        });
+        res.send("Error: User access token and channel ID not specified");
         return;
     }
 
@@ -67,24 +63,28 @@ app.get("/clip", (req, res) =>
         if (response.error)
         {
             res.send(`Error: ${response.error}: ${response.message || "No message"}`);
+            return;
         }
-        else if (response.data)
-        {
-            if (!response.data[0])
-            {
-                res.send("Error: got data but no data[0]");
-                return;
-            }
 
-            if (response.data[0].edit_url)
-                res.send(response.data[0].edit_url);
-            else
-                res.send("Error: got data but no edit url");
-        }
-        else
+        if (!response.data)
         {
             res.send("Error: no error message or data");
+            return;
         }
+
+        if (!response.data[0])
+        {
+            res.send("Error: got data but no data[0]");
+            return;
+        }
+
+        if (!response.data[0].edit_url)
+        {
+            res.send("Error: got data but no edit url");
+            return;
+        }
+
+        res.send(response.data[0].edit_url);
     });
 });
 

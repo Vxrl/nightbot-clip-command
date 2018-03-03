@@ -8,6 +8,10 @@
             $(document).ready(() =>
             {
                 const oauthHash = location.hash.substr(1);
+
+                if (!oauthHash)
+                    return;
+
                 const accessToken = decodeURIComponent(oauthHash.substr(oauthHash.indexOf('access_token=')).split('&')[0].split('=')[1]);
                 const stateString = decodeURIComponent(oauthHash.substr(oauthHash.indexOf('state=')).split('&')[0].split('=')[1]);
 
@@ -29,7 +33,7 @@
 
                 $("#startAuth").hide();
 
-                $("#loadingChannelText").text("Getting user ID for " + state.channel);
+                $("#commandLoadingText").text("Getting user ID for " + state.channel);
                 $("#commandLoading").show();
 
                 $.ajax(
@@ -51,33 +55,32 @@
                     {
                         $("#commandFailureText").text(`Error: ${data.error}: ${data.message || "No message"}`);
                         $("#commandFailure").show();
+                        return;
                     }
-                    else if (data.data)
-                    {
-                        if (!data.data[0])
-                        {
-                            $("#commandFailureText").text("Error: got data but no data[0]");
-                            console.log(data);
-                            $("#commandFailure").show();
-                            return;
-                        }
 
-                        if (data.data[0].id)
-                        {
-                            $("#commandText").val(`!commands add !clip $(urlfetch https://nightbot-clip-command.herokuapp.com/clip?user_access_token=${encodeURIComponent(accessToken)}&channel_id=${encodeURIComponent((data.data[0].id))})`);
-                            $("#showCommand").show();
-                        }
-                        else
-                        {
-                            $("#commandFailureText").text("Error: got data but no id");
-                            $("#commandFailure").show();
-                        }
-                    }
-                    else
+                    if (!data.data)
                     {
                         $("#commandFailureText").text("Error: no error message or data");
                         $("#commandFailure").show();
+                        return;
                     }
+
+                    if (!data.data[0])
+                    {
+                        $("#commandFailureText").text("Error: Channel doesn't exist");
+                        $("#commandFailure").show();
+                        return;
+                    }
+
+                    if (!data.data[0].id)
+                    {
+                        $("#commandFailureText").text("Error: got data but no id");
+                        $("#commandFailure").show();
+                        return;
+                    }
+
+                    $("#commandViewText").val(`!commands add !clip $(urlfetch https://nightbot-clip-command.herokuapp.com/clip?user_access_token=${encodeURIComponent(accessToken)}&channel_id=${encodeURIComponent((data.data[0].id))})`);
+                    $("#commandView").show();
                 });
             });
         </script>
@@ -129,16 +132,16 @@
         </div>
 
         <div id="commandLoading" style="display:none;">
-            <p id="loadingChannelText"></p>
-        </div>
-
-        <div id="showCommand" style="display:none;">
-            <label for="commandText">Nightbot command:</label>
-            <textarea id="commandText" rows="4" cols="80" onClick="this.select();" readonly="readonly"></textarea>
+            <p id="commandLoadingText"></p>
         </div>
 
         <div id="commandFailure" style="display:none;">
             <p id="commandFailureText"></p>
+        </div>
+
+        <div id="commandView" style="display:none;">
+            <label for="commandViewText">Nightbot command:</label>
+            <textarea id="commandViewText" rows="4" cols="80" onClick="this.select();" readonly="readonly"></textarea>
         </div>
     </body>
 </html>
