@@ -37,7 +37,7 @@ app.get("/clip", (req, res) =>
 
     if (!user_access_token || !channel_id)
     {
-        res.send("Error: User access token and channel ID not specified");
+        res.send("Error: user access token and channel ID not specified");
         return;
     }
 
@@ -76,7 +76,7 @@ app.get("/clip", (req, res) =>
             if (!response.message)
             {
                 res.send("Error: " + response.error);
-                return
+                return;
             }
 
             let messageContainer;
@@ -87,7 +87,7 @@ app.get("/clip", (req, res) =>
             catch (e)
             {
                 res.send("Error: couldn't parse error message");
-                return
+                return;
             }
 
             if (!messageContainer.message)
