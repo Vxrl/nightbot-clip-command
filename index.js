@@ -6,23 +6,24 @@ const port = process.env.PORT || 5000;
 
 app.set("view engine", "ejs");
 
+const indexLocals =
+{
+    twitch_base_url: "https://api.twitch.tv/kraken/oauth2/authorize",
+    twitch_client_id: process.env.TWITCH_CLIENT_ID,
+    twitch_redirect_uri: process.env.TWITCH_REDIRECT_URI,
+    twitch_response_type: "token",
+    twitch_scope: process.env.TWITCH_SCOPE,
+    twitch_force_verify: process.env.TWITCH_FORCE_VERIFY,
+
+    nightbot_base_url: "https://api.nightbot.tv/oauth2/authorize",
+    nightbot_client_id: process.env.NIGHTBOT_CLIENT_ID,
+    nightbot_redirect_uri: process.env.NIGHTBOT_REDIRECT_URI,
+    nightbot_response_type: "token",
+    nightbot_scope: process.env.NIGHTBOT_SCOPE
+};
 app.get("/", (req, res) =>
 {
-    res.render("pages/index",
-    {
-        twitch_base_url: "https://api.twitch.tv/kraken/oauth2/authorize",
-        twitch_client_id: process.env.TWITCH_CLIENT_ID,
-        twitch_redirect_uri: process.env.TWITCH_REDIRECT_URI,
-        twitch_response_type: "token",
-        twitch_scope: process.env.TWITCH_SCOPE,
-        twitch_force_verify: process.env.TWITCH_FORCE_VERIFY,
-
-        nightbot_base_url: "https://api.nightbot.tv/oauth2/authorize",
-        nightbot_client_id: process.env.NIGHTBOT_CLIENT_ID,
-        nightbot_redirect_uri: process.env.NIGHTBOT_REDIRECT_URI,
-        nightbot_response_type: "token",
-        nightbot_scope: process.env.NIGHTBOT_SCOPE
-    });
+    res.render("pages/index", indexLocals);
 });
 
 app.get("/nightbot", (req, res) =>
