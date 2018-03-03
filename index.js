@@ -86,7 +86,7 @@ app.get("/clip", (req, res) =>
             }
             catch (e)
             {
-                res.send("Error: couldn't parse error message");
+                res.send(response.message);
                 return;
             }
 
