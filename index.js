@@ -37,7 +37,7 @@ app.get("/clip", (req, res) =>
 
     if (!user_access_token || !channel_id)
     {
-        res.send("Error: user access token and channel ID not specified");
+        res.send("Error: User access token and channel ID not specified");
         return;
     }
 
@@ -56,7 +56,7 @@ app.get("/clip", (req, res) =>
     {
         if (err)
         {
-            res.send("Error: failed to reach Twitch clips API: " + err);
+            res.send("Error: Failed to reach Twitch clips API: " + err);
             return;
         }
 
@@ -67,7 +67,7 @@ app.get("/clip", (req, res) =>
         }
         catch (e)
         {
-            res.send("Error: failed to parse response");
+            res.send("Error: Failed to parse response");
             return;
         }
 
@@ -102,19 +102,19 @@ app.get("/clip", (req, res) =>
 
         if (!response.data)
         {
-            res.send("Error: no error message or data");
+            res.send("Error: No error message or data");
             return;
         }
 
         if (!response.data[0])
         {
-            res.send("Error: got data but no data[0]");
+            res.send("Error: Got data but no data[0]");
             return;
         }
 
         if (!response.data[0].edit_url)
         {
-            res.send("Error: got data but no edit_url");
+            res.send("Error: Got data but no edit_url");
             return;
         }
 

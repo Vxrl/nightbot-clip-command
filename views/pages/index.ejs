@@ -48,19 +48,19 @@
                 {
                     if (!data.data)
                     {
-                        $commandStatusText.text("Error: no data");
+                        $commandStatusText.text("Error: No data");
                         return;
                     }
 
                     if (!data.data[0])
                     {
-                        $commandStatusText.text("Error: channel doesn't exist");
+                        $commandStatusText.text("Error: Channel doesn't exist");
                         return;
                     }
 
                     if (!data.data[0].id)
                     {
-                        $commandStatusText.text("Error: got data but no id");
+                        $commandStatusText.text("Error: Got data but no id");
                         return;
                     }
 
@@ -84,11 +84,11 @@
                 {
                     if (!jqXHR.responseJSON)
                     {
-                        $commandStatusText.text("Error: failed to get user ID (no response)");
+                        $commandStatusText.text("Error: Failed to get user ID (no response)");
                         return;
                     }
 
-                    $commandStatusText.text(jqXHR.responseJSON.message || "Error: failed to get user ID (no response message)");
+                    $commandStatusText.text(jqXHR.responseJSON.message || "Error: Failed to get user ID (no response message)");
                 });
             });
         </script>

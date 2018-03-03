@@ -53,7 +53,7 @@
                 {
                     if (data.status !== 200)
                     {
-                        $nightbotAddStatusText.text("Error: failed to add command: " + data.status);
+                        $nightbotAddStatusText.text("Error: Failed to add command: " + data.status);
                         return;
                     }
 
@@ -62,11 +62,11 @@
                 {
                     if (!jqXHR.responseJSON)
                     {
-                        $nightbotAddStatusText.text("Error: failed to add command (no response)");
+                        $nightbotAddStatusText.text("Error: Failed to add command (no response)");
                         return;
                     }
 
-                    $nightbotAddStatusText.text(jqXHR.responseJSON.message || "Error: failed to add command (no response message)");
+                    $nightbotAddStatusText.text(jqXHR.responseJSON.message || "Error: Failed to add command (no response message)");
                 });
             });
         </script>
