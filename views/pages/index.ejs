@@ -51,14 +51,18 @@
 
                     const $commandFailureText = $("#commandFailureText");
                     const $commandFailure = $("#commandFailure");
+                    function showCommandFailureMessage(text)
+                    {
+                        $commandFailureText.text(text);
+                        $commandFailure.show();
+                    }
 
                     if (data.error)
                     {
                         if (!data.message)
                         {
-                            $commandFailureText.text("Error: " + data.error);
-                            $commandFailure.show();
-                            return
+                            showCommandFailureMessage("Error: " + data.error);
+                            return;
                         }
 
                         let messageContainer;
@@ -68,41 +72,35 @@
                         }
                         catch (e)
                         {
-                            $commandFailureText.text("Error: couldn't parse error message");
-                            $commandFailure.show();
-                            return
+                            showCommandFailureMessage("Error: couldn't parse error message");
+                            return;
                         }
 
                         if (!messageContainer.message)
                         {
-                            $commandFailureText.text("Error: " + data.error);
-                            $commandFailure.show();
+                            showCommandFailureMessage("Error: " + data.error);
                             return;
                         }
 
-                        $commandFailureText.text(messageContainer.message);
-                        $commandFailure.show();
+                        showCommandFailureMessage(messageContainer.message);
                         return;
                     }
 
                     if (!data.data)
                     {
-                        $commandFailureText.text("Error: no error message or data");
-                        $commandFailure.show();
+                        showCommandFailureMessage("Error: no error message or data");
                         return;
                     }
 
                     if (!data.data[0])
                     {
-                        $commandFailureText.text("Error: channel doesn't exist");
-                        $commandFailure.show();
+                        showCommandFailureMessage("Error: channel doesn't exist");
                         return;
                     }
 
                     if (!data.data[0].id)
                     {
-                        $commandFailureText.text("Error: got data but no id");
-                        $commandFailure.show();
+                        showCommandFailureMessage("Error: got data but no id");
                         return;
                     }
 
@@ -158,7 +156,7 @@
                             channel: channelToClip.value
                         }));
                 }
-                
+
                 function textBoxKeyPressed(event)
                 {
                     if (event.keyCode === 13)
