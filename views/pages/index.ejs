@@ -111,7 +111,7 @@
 
                     const nightbotCommand = `$(urlfetch https://nightbot-clip-command.herokuapp.com/clip?user_access_token=${encodeURIComponent(accessToken)}&channel_id=${encodeURIComponent((data.data[0].id))})`;
                     $("#commandViewText").val(nightbotCommand);
-                    $("#commandViewAddLink").attr("formaction",
+                    $("#commandViewAddLink").attr("href",
                         "<%= nightbot_base_url %>" +
                         "?client_id=" + encodeURIComponent("<%= nightbot_client_id %>") +
                         "&redirect_uri=" + encodeURIComponent("<%= nightbot_redirect_uri %>") +
@@ -188,10 +188,7 @@
             <br>
 
             <p>Add this command through the <a href="https://beta.nightbot.tv/commands/custom">Nightbot web interface</a>, or click below to automatically add the command.</p>
-            <!-- <a id="commandViewAddLink">Automatically add the command !clip</a> -->
-            <form>
-                <button id="commandViewAddLink">Automatically add the command !clip</button>
-            </form>
+            <a id="commandViewAddLink">Automatically add the command !clip</a>
         </div>
     </body>
 </html>
