@@ -7,11 +7,14 @@
             $(document).ready(() =>
             {
                 const oauthHash = location.hash.substr(1);
-                const accessToken = decodeURIComponent(oauthHash.substr(oauthHash.indexOf('access_token=')).split('&')[0].split('=')[1]);
-                const stateString = decodeURIComponent(oauthHash.substr(oauthHash.indexOf('state=')).split('&')[0].split('=')[1]);
+                let accessToken = oauthHash.substr(oauthHash.indexOf('access_token=')).split('&')[0].split('=')[1];
+                let stateString = oauthHash.substr(oauthHash.indexOf('state=')).split('&')[0].split('=')[1];
 
                 if (!accessToken || !stateString)
                     return;
+
+                accessToken = decodeURIComponent(accessToken);
+                stateString = decodeURIComponent(stateString);
 
                 let state;
                 try
