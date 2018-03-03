@@ -33,7 +33,8 @@
 
                 $("#returnToHome").hide();
 
-                $("#nightbotAddResultText").text("Adding !clip command...");
+                const $nightbotAddResultText = $("#nightbotAddResultText");
+                $nightbotAddResultText.text("Adding !clip command...");
                 $("#nightbotAddResult").show();
 
                 $.ajax(
@@ -53,10 +54,22 @@
                     method: "POST"
                 }).done(data =>
                 {
-                    console.log(data);
+                    if (data.status !== 200)
+                    {
+                        $nightbotAddResultText.text("Error: failed to add command: " + data.status);
+                        return;
+                    }
+
+                    console.log("Command successfully added");
                 }).fail(jqXHR =>
                 {
-                    $("#nightbotAddResultText").text(jqXHR.responseJSON.message);
+                    if (!jqXHR.responseJSON)
+                    {
+                        $nightbotAddResultText.text("Error: failed to add command (no response)");
+                        return;
+                    }
+
+                    $nightbotAddResultText.text(jqXHR.responseJSON.message || "Error: failed to add command (no response message)");
                 });
             });
         </script>

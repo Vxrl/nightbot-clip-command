@@ -34,7 +34,8 @@
                 $("#startAuth").hide();
 
                 $("#commandLoadingText").text("Getting user ID for " + state.channel);
-                $("#commandLoading").show();
+                const $commandLoading = $("#commandLoading");
+                $commandLoading.show();
 
                 $.ajax(
                 {
@@ -49,13 +50,17 @@
                     }
                 }).done(data =>
                 {
-                    $("#commandLoading").hide();
+                    $commandLoading.hide();
+
+                    const $commandFailureText = $("#commandFailureText");
+                    const $commandFailure = $("#commandFailure");
 
                     if (data.error)
                     {
                         if (!data.message)
                         {
-                            res.send("Error: " + data.error);
+                            $commandFailureText.text("Error: " + data.error);
+                            $commandFailure.show();
                             return
                         }
 
@@ -66,38 +71,41 @@
                         }
                         catch (e)
                         {
-                            res.send("Error: couldn't parse error message");
+                            $commandFailureText.text("Error: couldn't parse error message");
+                            $commandFailure.show();
                             return
                         }
 
                         if (!messageContainer.message)
                         {
-                            res.send("Error: " + data.error);
+                            $commandFailureText.text("Error: " + data.error);
+                            $commandFailure.show();
                             return;
                         }
 
-                        res.send(messageContainer.message);
+                        $commandFailureText.text(messageContainer.message);
+                        $commandFailure.show();
                         return;
                     }
 
                     if (!data.data)
                     {
-                        $("#commandFailureText").text("Error: no error message or data");
-                        $("#commandFailure").show();
+                        $commandFailureText.text("Error: no error message or data");
+                        $commandFailure.show();
                         return;
                     }
 
                     if (!data.data[0])
                     {
-                        $("#commandFailureText").text("Error: channel doesn't exist");
-                        $("#commandFailure").show();
+                        $commandFailureText.text("Error: channel doesn't exist");
+                        $commandFailure.show();
                         return;
                     }
 
                     if (!data.data[0].id)
                     {
-                        $("#commandFailureText").text("Error: got data but no id");
-                        $("#commandFailure").show();
+                        $commandFailureText.text("Error: got data but no id");
+                        $commandFailure.show();
                         return;
                     }
 
