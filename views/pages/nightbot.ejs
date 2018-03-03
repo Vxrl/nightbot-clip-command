@@ -38,6 +38,7 @@
 
                 $.ajax(
                 {
+                    method: "POST",
                     url: "https://api.nightbot.tv/1/commands",
                     data:
                     {
@@ -49,8 +50,7 @@
                     headers:
                     {
                         "Authorization": "Bearer " + accessToken
-                    },
-                    method: "POST"
+                    }
                 }).done(data =>
                 {
                     console.log(data);
