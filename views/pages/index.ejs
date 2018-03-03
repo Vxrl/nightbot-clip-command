@@ -29,7 +29,7 @@
                     $("#startAuth").hide();
                     $("#showCommand").show();
 
-                    $.get(
+                    $.ajax(
                     {
                         url: "https://api.twitch.tv/helix/users",
                         data:
@@ -41,7 +41,7 @@
                             "Authorization": "Bearer " + accessToken
                         }
                     }).done(data => {
-                        $("#commandText").val(JSON.stringify(data));
+                        $("#commandText").val(data.data.id);
                     });
 
                     //$("#tmiPasswordField").val('oauth:' + encodeURIComponent(accessToken));
