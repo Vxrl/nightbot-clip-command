@@ -33,7 +33,7 @@
 
                 $("#returnToHome").hide();
 
-                $("#nightbotAddResultText").text("Adding !clips command...");
+                $("#nightbotAddResultText").text("Adding !clip command...");
                 $("#nightbotAddResult").show();
 
                 $.ajax(
@@ -43,7 +43,7 @@
                     {
                         "coolDown": "5",
                         "message": state.command,
-                        "name": "!clips",
+                        "name": "!clip",
                         "userLevel": "everyone"
                     },
                     headers:
