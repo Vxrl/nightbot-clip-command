@@ -58,7 +58,7 @@
         <div id="startAuth">
             <div>
                 <label for="channelToClip">Channel to clip:</label>
-                <input type="text" id="channelToClip" onkeypress="textBoxKeyPressed(event)" required>
+                <input type="text" id="channelToClip" onkeypress="textBoxKeyPressed(event)">
             </div>
 
             <br>
@@ -70,6 +70,12 @@
             <script type="text/javascript" language="javascript">
                 function startAuth()
                 {
+                    if (!channelToClip.value)
+                    {
+                        alert("Enter a channel name");
+                        return;
+                    }
+
                     window.location.href = "<%= base_url %>" +
                         "?client_id=" + encodeURIComponent("<%= client_id %>") +
                         "&redirect_uri=" + encodeURIComponent("<%= redirect_uri %>") +
