@@ -19,6 +19,11 @@ app.get("/", (req, res) =>
     });
 });
 
+app.get("/nightbot", (req, res) =>
+{
+
+});
+
 app.get("/clip", (req, res) =>
 {
     const user_access_token = req.query.user_access_token;
