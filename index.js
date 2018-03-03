@@ -27,7 +27,7 @@ app.get("/", (req, res) =>
 
 app.get("/nightbot", (req, res) =>
 {
-
+    res.render("pages/nightbot");
 });
 
 app.get("/clip", (req, res) =>
