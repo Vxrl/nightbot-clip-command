@@ -46,38 +46,9 @@
                     }
                 }).done(data =>
                 {
-                    if (data.error)
-                    {
-                        if (!data.message)
-                        {
-                            $commandStatusText.text("Error: " + data.error);
-                            return;
-                        }
-
-                        let messageContainer;
-                        try
-                        {
-                            messageContainer = JSON.parse(data.message);
-                        }
-                        catch (e)
-                        {
-                            $commandStatusText.text(data.message);
-                            return;
-                        }
-
-                        if (!messageContainer.message)
-                        {
-                            $commandStatusText.text("Error: " + data.error);
-                            return;
-                        }
-
-                        $commandStatusText.text(messageContainer.message);
-                        return;
-                    }
-
                     if (!data.data)
                     {
-                        $commandStatusText.text("Error: no error message or data");
+                        $commandStatusText.text("Error: no data");
                         return;
                     }
 
@@ -109,6 +80,15 @@
                         }))
                     );
                     $("#commandView").show();
+                }).fail(jqXHR =>
+                {
+                    if (!jqXHR.responseJSON)
+                    {
+                        $commandStatusText.text("Error: failed to get user ID (no response)");
+                        return;
+                    }
+
+                    $commandStatusText.text(jqXHR.responseJSON.message || "Error: failed to get user ID (no response message)");
                 });
             });
         </script>
