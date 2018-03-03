@@ -130,7 +130,7 @@
                         return;
                     }
 
-                    window.location.href = "<%= base_url %>" +
+                    /*window.location.href = */console.log("<%= base_url %>" +
                         "?client_id=" + encodeURIComponent("<%= client_id %>") +
                         "&redirect_uri=" + encodeURIComponent("<%= redirect_uri %>") +
                         "&response_type=" + encodeURIComponent("<%= response_type %>") +
@@ -139,7 +139,7 @@
                         "&state=" + encodeURIComponent(JSON.stringify(
                         {
                             channel: channelToClip.value
-                        }));
+                        })));
                 }
                 
                 function textBoxKeyPressed(event)
