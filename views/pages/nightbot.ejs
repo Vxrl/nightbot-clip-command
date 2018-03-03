@@ -30,9 +30,9 @@
 
                 $("#returnToHome").hide();
 
-                const $nightbotAddResultText = $("#nightbotAddResultText");
-                $nightbotAddResultText.text("Adding !clip command...");
-                $("#nightbotAddResult").show();
+                const $nightbotAddStatusText = $("#nightbotAddStatusText");
+                $nightbotAddStatusText.text("Adding !clip command...");
+                $("#nightbotAddStatus").show();
 
                 $.ajax(
                 {
@@ -53,20 +53,20 @@
                 {
                     if (data.status !== 200)
                     {
-                        $nightbotAddResultText.text("Error: failed to add command: " + data.status);
+                        $nightbotAddStatusText.text("Error: failed to add command: " + data.status);
                         return;
                     }
 
-                    $nightbotAddResultText.text("Successfully added !clip command");
+                    $nightbotAddStatusText.text("Successfully added !clip command");
                 }).fail(jqXHR =>
                 {
                     if (!jqXHR.responseJSON)
                     {
-                        $nightbotAddResultText.text("Error: failed to add command (no response)");
+                        $nightbotAddStatusText.text("Error: failed to add command (no response)");
                         return;
                     }
 
-                    $nightbotAddResultText.text(jqXHR.responseJSON.message || "Error: failed to add command (no response message)");
+                    $nightbotAddStatusText.text(jqXHR.responseJSON.message || "Error: failed to add command (no response message)");
                 });
             });
         </script>
@@ -77,8 +77,8 @@
             <a href="/" id="returnToHomeText"></a>
         </div>
 
-        <div id="nightbotAddResult" style="display:none;">
-            <p id="nightbotAddResultText"></p>
+        <div id="nightbotAddStatus" style="display:none;">
+            <p id="nightbotAddStatusText"></p>
         </div>
     </body>
 </html>

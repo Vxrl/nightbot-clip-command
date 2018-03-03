@@ -28,9 +28,10 @@
 
                 $("#startAuth").hide();
 
-                $("#commandLoadingText").text("Getting user ID for " + state.channel);
-                const $commandLoading = $("#commandLoading");
-                $commandLoading.show();
+                const $commandStatusText = $("#commandStatusText");
+                const $commandStatus = $("#commandStatus");
+                $commandStatusText.text("Getting user ID for " + state.channel);
+                $commandStatus.show();
 
                 $.ajax(
                 {
@@ -45,21 +46,11 @@
                     }
                 }).done(data =>
                 {
-                    $commandLoading.hide();
-
-                    const $commandFailureText = $("#commandFailureText");
-                    const $commandFailure = $("#commandFailure");
-                    function showCommandFailureMessage(text)
-                    {
-                        $commandFailureText.text(text);
-                        $commandFailure.show();
-                    }
-
                     if (data.error)
                     {
                         if (!data.message)
                         {
-                            showCommandFailureMessage("Error: " + data.error);
+                            $commandStatusText.text("Error: " + data.error);
                             return;
                         }
 
@@ -70,39 +61,41 @@
                         }
                         catch (e)
                         {
-                            showCommandFailureMessage("Error: couldn't parse error message");
+                            $commandStatusText.text("Error: couldn't parse error message");
                             return;
                         }
 
                         if (!messageContainer.message)
                         {
-                            showCommandFailureMessage("Error: " + data.error);
+                            $commandStatusText.text("Error: " + data.error);
                             return;
                         }
 
-                        showCommandFailureMessage(messageContainer.message);
+                        $commandStatusText.text(messageContainer.message);
                         return;
                     }
 
                     if (!data.data)
                     {
-                        showCommandFailureMessage("Error: no error message or data");
+                        $commandStatusText.text("Error: no error message or data");
                         return;
                     }
 
                     if (!data.data[0])
                     {
-                        showCommandFailureMessage("Error: channel doesn't exist");
+                        $commandStatusText.text("Error: channel doesn't exist");
                         return;
                     }
 
                     if (!data.data[0].id)
                     {
-                        showCommandFailureMessage("Error: got data but no id");
+                        $commandStatusText.text("Error: got data but no id");
                         return;
                     }
 
-                    const nightbotCommand = `$(urlfetch https://nightbot-clip-command.herokuapp.com/clip?user_access_token=${encodeURIComponent(accessToken)}&channel_id=${encodeURIComponent((data.data[0].id))})`;
+                    $commandStatus.hide();
+
+                    const nightbotCommand = `$(urlfetch https://nightbot-clip-command.herokuapp.com/clip?user_access_token=${encodeURIComponent(accessToken)}&channel_id=${encodeURIComponent(data.data[0].id)})`;
                     $("#commandViewText").val(nightbotCommand);
                     $("#commandViewAddLink").attr("href",
                         "<%= nightbot_base_url %>" +
@@ -166,12 +159,8 @@
             </script>
         </div>
 
-        <div id="commandLoading" style="display:none;">
-            <p id="commandLoadingText"></p>
-        </div>
-
-        <div id="commandFailure" style="display:none;">
-            <p id="commandFailureText"></p>
+        <div id="commandStatus" style="display:none;">
+            <p id="commandStatusText"></p>
         </div>
 
         <div id="commandView" style="display:none;">
