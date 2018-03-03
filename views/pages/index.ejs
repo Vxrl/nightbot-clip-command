@@ -87,11 +87,11 @@
                 {
                     if (!jqXHR.responseJSON)
                     {
-                        $commandStatusText.text("Error: Failed to get user ID (no response)");
+                        $commandStatusText.text("Error: Failed to get channel ID (no response)");
                         return;
                     }
 
-                    $commandStatusText.text(jqXHR.responseJSON.message || "Error: Failed to get user ID (no response message)");
+                    $commandStatusText.text(jqXHR.responseJSON.message || "Error: Failed to get channel ID (no response message)");
                 });
             });
         </script>
