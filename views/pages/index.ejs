@@ -8,8 +8,8 @@
             $(document).ready(() =>
             {
                 const oauthHash = location.hash.substr(1);
-                const accessToken = oauthHash.substr(oauthHash.indexOf('access_token=')).split('&')[0].split('=')[1];
-                const stateString = oauthHash.substr(oauthHash.indexOf('state=')).split('&')[0].split('=')[1];
+                const accessToken = decodeURIComponent(oauthHash.substr(oauthHash.indexOf('access_token=')).split('&')[0].split('=')[1]);
+                const stateString = decodeURIComponent(oauthHash.substr(oauthHash.indexOf('state=')).split('&')[0].split('=')[1]);
 
                 if (accessToken && stateString)
                 {
@@ -72,7 +72,7 @@
                         "&force_verify=" + encodeURIComponent("<%= force_verify %>") +
                         "&state=" + encodeURIComponent(JSON.stringify(
                         {
-                            channel: channelToClip
+                            channel: channelToClip.value
                         }));
                 }
             </script>
